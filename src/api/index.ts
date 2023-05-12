@@ -1,18 +1,21 @@
 import type { AxiosProgressEvent, GenericAbortSignal } from 'axios'
 import { post } from '@/utils/request'
+import request from '@/utils/request/axios'
 import { useAuthStore, useSettingStore } from '@/store'
 
-export function fetchChatAPI<T = any>(
-  prompt: string,
-  options?: { conversationId?: string; parentMessageId?: string },
-  signal?: GenericAbortSignal,
-) {
-  return post<T>({
-    url: '/chat',
-    data: { prompt, options },
-    signal,
-  })
+
+export function fetchConvert(val: string) {
+	return request.request({
+			method: 'post',
+			url: '/convert',
+			data: {
+				data: val,
+			},
+			responseType: 'arraybuffer',
+		},
+	)
 }
+
 
 export function fetchChatConfig<T = any>() {
   return post<T>({

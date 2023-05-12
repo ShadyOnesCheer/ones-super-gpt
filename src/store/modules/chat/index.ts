@@ -166,22 +166,6 @@ export const useChatStore = defineStore('chat-store', {
       }
     },
 
-    clearChatByUuid(uuid: number) {
-      if (!uuid || uuid === 0) {
-        if (this.chat.length) {
-          this.chat[0].data = []
-          this.recordState()
-        }
-        return
-      }
-
-      const index = this.chat.findIndex(item => item.uuid === uuid)
-      if (index !== -1) {
-        this.chat[index].data = []
-        this.recordState()
-      }
-    },
-
     async reloadRoute(uuid?: number) {
       this.recordState()
       await router.push({ name: 'Chat', params: { uuid } })

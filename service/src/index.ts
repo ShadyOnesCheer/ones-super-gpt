@@ -5,6 +5,7 @@ import { chatConfig, chatReplyProcess, currentModel } from './chatgpt'
 import { auth } from './middleware/auth'
 import { limiter } from './middleware/limiter'
 import { isNotEmptyString } from './utils/is'
+import {convert} from './utils/convert'
 
 const app = express()
 const router = express.Router()
@@ -80,6 +81,21 @@ router.post('/verify', async (req, res) => {
   catch (error) {
     res.send({ status: 'Fail', message: error.message, data: null })
   }
+})
+
+router.post('/convert', async (req, res) => {
+	try {
+		const data = await convert(req.body.data)
+		res.set({
+			'Content-Type': 'application/octet-stream',
+			'Content-Disposition': 'attachment; filename=test.xlsx',
+			'Content-Length': data?.length,
+		})
+		res.send(data)
+	} catch (e) {
+		res.send({status: 'Fail', message: e.message, data: null})
+	}
+
 })
 
 app.use('', router)
